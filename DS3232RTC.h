@@ -33,16 +33,18 @@
  * CC BY-SA 4.0                                                         *
  * "Arduino DS3232RTC Library" by Jack Christensen is licensed under    *
  * CC BY-SA 4.0, http://creativecommons.org/licenses/by-sa/4.0/         *
- *----------------------------------------------------------------------*/ 
+ *----------------------------------------------------------------------*/
 
 #ifndef DS3232RTC_h
 #define DS3232RTC_h
 #include <Time.h>
 
+#define _BV(x) (1 << (x))
+
 #if defined(ARDUINO) && ARDUINO >= 100
-#include <Arduino.h> 
+#include <Arduino.h>
 #else
-#include <WProgram.h> 
+#include <WProgram.h>
 #endif
 
 //DS3232 I2C Address
@@ -127,6 +129,9 @@ enum ALARM_TYPES_t {
 #define CENTURY 7                  //Century bit in Month register
 #define DYDT 6                     //Day/Date flag bit in alarm Day/Date registers
 
+class DS3232RTC;
+extern DS3232RTC rtc;
+
 class DS3232RTC
 {
     public:
@@ -152,7 +157,5 @@ class DS3232RTC
         uint8_t dec2bcd(uint8_t n);
         static uint8_t bcd2dec(uint8_t n);
 };
-
-extern DS3232RTC RTC;
 
 #endif

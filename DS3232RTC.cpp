@@ -115,7 +115,15 @@ byte DS3232RTC::read(tmElements_t &tm)
     i2cRequestFrom(RTC_ADDR, tmNbrFields);
     tm.Second = bcd2dec(i2cRead() & ~_BV(DS1307_CH));
     tm.Minute = bcd2dec(i2cRead());
-    tm.Hour = bcd2dec(i2cRead() & ~_BV(HR1224));    //assumes 24hr clock
+    byte hrReg = i2cRead();
+    if (hrReg & _BV(HR1224)) // 12Hr is set
+    {
+	    tm.Hour = bcd2dec(hrReg & ~0x70);    //Only Bit 4 is useful
+	}
+	else
+	{
+	    tm.Hour = bcd2dec(hrReg & ~_BV(HR1224));    //assumes 24hr clock
+	}
     tm.Wday = i2cRead();
     tm.Day = bcd2dec(i2cRead());
     tm.Month = bcd2dec(i2cRead() & ~_BV(CENTURY));  //don't use the Century bit

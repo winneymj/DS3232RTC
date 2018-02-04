@@ -118,7 +118,7 @@ byte DS3232RTC::read(tmElements_t &tm)
     byte hrReg = i2cRead();
     if (hrReg & _BV(HR1224)) // 12Hr is set
     {
-	    tm.Hour = bcd2dec(hrReg & ~0x70);    //Only Bit 4 is useful
+	    tm.Hour		= bcd2dec(hrReg & ~0xE0);    //Only Bit 4 is useful
 	}
 	else
 	{
